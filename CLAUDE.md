@@ -99,6 +99,12 @@ Every lesson body carries "sig": "v1" so a future change is detectable.
 
 - COMMIT AT EVERY WORKING INCREMENT. Never squash. Commit history is a
   judged artifact — forty honest commits read better than eight tidy ones.
+- NEVER REWRITE HISTORY. No filter-branch, rebase, amend, squash, or
+  force-push. History moves forward only: a defect in an existing commit
+  — wrong author, typo, stale reference — is corrected by a NEW commit,
+  never by rewriting the old one. A config fix (git config user.email)
+  corrects future commits and that is the whole remedy; past commits keep
+  their metadata. If a rewrite seems warranted, ASK AND STOP.
 - Nothing in this project predates Sep 1. No prior work.
 - Scope: ONE failure class done completely beats three half-built.
   slippageRevert first.
