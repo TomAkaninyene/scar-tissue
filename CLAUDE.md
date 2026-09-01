@@ -1,4 +1,3 @@
-cat > CLAUDE.md << 'EOF'
 # Scar Tissue — agent working rules
 
 An onchain execution agent that learns from its own failed transactions on
