@@ -1,3 +1,4 @@
+cat > CLAUDE.md << 'EOF'
 # Scar Tissue — agent working rules
 
 An onchain execution agent that learns from its own failed transactions on
@@ -104,3 +105,4 @@ Every lesson body carries "sig": "v1" so a future change is detectable.
   slippageRevert first.
 - The deletion test is a FLAG (--no-memory), not a code edit. It must run
   live, back to back, on camera.
+EOF
