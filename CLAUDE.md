@@ -56,6 +56,16 @@ Every lesson body carries "sig": "v1" so a future change is detectable.
 - Rank filtering is RELATIVE to the top hit in the result set, never an
   absolute floor (floors drift as the corpus grows). BM25/IDF: a token in
   every row scores ~1e-06, a distinctive token ~-0.79. Six orders apart.
+  BUT that six-order spread was measured on a MULTI-token query. On the
+  SINGLE-token queries these rules mandate, every matching row contains
+  the token, so IDF is UNIFORM across the match set and the only spread
+  left is document-length normalisation — measured at ~2.3x at the
+  extreme (same token, one body padded 200x longer). Nowhere near a
+  one-order window, so the window excludes NOTHING in practice: the FTS
+  MATCH is what does the excluding. Keep the filter — it costs nothing
+  and still guards the multi-token and pathological-length cases — but
+  NEVER rely on it to suppress a bad neighbour. If a bad neighbour must
+  be kept out, the token itself has to be wrong for it.
 
 ## Hard rules
 
