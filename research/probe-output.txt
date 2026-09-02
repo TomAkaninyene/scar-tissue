@@ -1,0 +1,616 @@
+
+--- PART 1 / write_phase (pid=923288) ---
+{
+  "set_entity_result": {
+    "id": "aa8197ab-ec28-4975-b267-b8a4e2c808da",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "probe",
+    "name": "cold_start_check",
+    "status": null,
+    "body": {
+      "marker": "0bb68d89-5303-4dc0-a4eb-695c597917a5",
+      "written_by_pid": 923288
+    },
+    "created_at": "2026-08-18T13:29:05.632Z",
+    "updated_at": "2026-08-18T13:29:05.632Z"
+  },
+  "db_path": "/tmp/claude-0/-root-sibyl-probe/16366990-bfc6-4060-add8-11fef3816da7/scratchpad/probe_scratch/probe.db",
+  "db_file_exists": true,
+  "db_file_size_bytes": 4096,
+  "wal_file_exists": true
+}
+
+--- PART 1 / read_phase (pid=923289, fresh process) ---
+{
+  "get_entity_result": {
+    "id": "aa8197ab-ec28-4975-b267-b8a4e2c808da",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "probe",
+    "name": "cold_start_check",
+    "status": null,
+    "body": {
+      "marker": "0bb68d89-5303-4dc0-a4eb-695c597917a5",
+      "written_by_pid": 923288
+    },
+    "created_at": "2026-08-18T13:29:05.632Z",
+    "updated_at": "2026-08-18T13:29:05.632Z"
+  },
+  "db_file_exists": true,
+  "db_file_size_bytes": 266240,
+  "wal_file_exists": true
+}
+
+======================================================================
+PART 1: cold-start persistence (separate OS processes)
+======================================================================
+orchestrator pid=923286
+
+--- PART 1 / subprocess exit codes ---
+{
+  "write_phase_returncode": 0,
+  "read_phase_returncode": 0
+}
+
+======================================================================
+PART 2: tokenizer behaviour + cross-contract neighbour retrieval
+======================================================================
+
+--- PART 2 / seeded entities ---
+[
+  {
+    "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "failure",
+    "name": "routerA/swapExactTokensForTokens/slippage-revert",
+    "status": null,
+    "body": {
+      "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+    },
+    "created_at": "2026-08-18T13:29:06.105Z",
+    "updated_at": "2026-08-18T13:29:06.105Z"
+  },
+  {
+    "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "failure",
+    "name": "routerB/exactInputSingle/slippage-revert",
+    "status": null,
+    "body": {
+      "note": "contract B, exactInputSingle signature, reverted on slippage"
+    },
+    "created_at": "2026-08-18T13:29:06.129Z",
+    "updated_at": "2026-08-18T13:29:06.129Z"
+  },
+  {
+    "id": "91d92a90-97ff-415f-8277-4566ff23d72e",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "failure",
+    "name": "unrelated/approve/allowance-revert",
+    "status": null,
+    "body": {
+      "note": "unrelated failure class entirely, reverted on allowance"
+    },
+    "created_at": "2026-08-18T13:29:06.131Z",
+    "updated_at": "2026-08-18T13:29:06.131Z"
+  },
+  {
+    "id": "26d5519f-df81-49a1-8733-dba417a16b9b",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "failure",
+    "name": "revert-stem-check-a",
+    "status": null,
+    "body": {
+      "note": "this transaction reverted"
+    },
+    "created_at": "2026-08-18T13:29:06.134Z",
+    "updated_at": "2026-08-18T13:29:06.134Z"
+  },
+  {
+    "id": "bc40a5af-5f60-4f67-9c2a-147c6adbbcbf",
+    "tenant_id": "00000000-0000-0000-0000-000000000001",
+    "category": "failure",
+    "name": "revert-stem-check-b",
+    "status": null,
+    "body": {
+      "note": "reverting behaviour observed repeatedly"
+    },
+    "created_at": "2026-08-18T13:29:06.136Z",
+    "updated_at": "2026-08-18T13:29:06.136Z"
+  }
+]
+
+--- PART 2 / search_entities(query='slippage revert', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    },
+    {
+      "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerB/exactInputSingle/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract B, exactInputSingle signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.129Z",
+      "updated_at": "2026-08-18T13:29:06.129Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"slippage\" \"revert\"",
+    "rows": [
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -0.7896994581891067
+      },
+      {
+        "name": "routerB/exactInputSingle/slippage-revert",
+        "category": "failure",
+        "rank": -0.7896994581891067
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='router', prefix=False) ---
+{
+  "public_api_result": [],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"router\"",
+    "rows": []
+  }
+}
+
+--- PART 2 / search_entities(query='slippage', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    },
+    {
+      "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerB/exactInputSingle/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract B, exactInputSingle signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.129Z",
+      "updated_at": "2026-08-18T13:29:06.129Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"slippage\"",
+    "rows": [
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -0.7896981146776563
+      },
+      {
+        "name": "routerB/exactInputSingle/slippage-revert",
+        "category": "failure",
+        "rank": -0.7896981146776563
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='revert', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "26d5519f-df81-49a1-8733-dba417a16b9b",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "revert-stem-check-a",
+      "status": null,
+      "body": {
+        "note": "this transaction reverted"
+      },
+      "created_at": "2026-08-18T13:29:06.134Z",
+      "updated_at": "2026-08-18T13:29:06.134Z"
+    },
+    {
+      "id": "bc40a5af-5f60-4f67-9c2a-147c6adbbcbf",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "revert-stem-check-b",
+      "status": null,
+      "body": {
+        "note": "reverting behaviour observed repeatedly"
+      },
+      "created_at": "2026-08-18T13:29:06.136Z",
+      "updated_at": "2026-08-18T13:29:06.136Z"
+    },
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    },
+    {
+      "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerB/exactInputSingle/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract B, exactInputSingle signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.129Z",
+      "updated_at": "2026-08-18T13:29:06.129Z"
+    },
+    {
+      "id": "91d92a90-97ff-415f-8277-4566ff23d72e",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "unrelated/approve/allowance-revert",
+      "status": null,
+      "body": {
+        "note": "unrelated failure class entirely, reverted on allowance"
+      },
+      "created_at": "2026-08-18T13:29:06.131Z",
+      "updated_at": "2026-08-18T13:29:06.131Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"revert\"",
+    "rows": [
+      {
+        "name": "revert-stem-check-a",
+        "category": "failure",
+        "rank": -1.4789915966386554e-06
+      },
+      {
+        "name": "revert-stem-check-b",
+        "category": "failure",
+        "rank": -1.4426229508196723e-06
+      },
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      },
+      {
+        "name": "routerB/exactInputSingle/slippage-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      },
+      {
+        "name": "unrelated/approve/allowance-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='reverting', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "26d5519f-df81-49a1-8733-dba417a16b9b",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "revert-stem-check-a",
+      "status": null,
+      "body": {
+        "note": "this transaction reverted"
+      },
+      "created_at": "2026-08-18T13:29:06.134Z",
+      "updated_at": "2026-08-18T13:29:06.134Z"
+    },
+    {
+      "id": "bc40a5af-5f60-4f67-9c2a-147c6adbbcbf",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "revert-stem-check-b",
+      "status": null,
+      "body": {
+        "note": "reverting behaviour observed repeatedly"
+      },
+      "created_at": "2026-08-18T13:29:06.136Z",
+      "updated_at": "2026-08-18T13:29:06.136Z"
+    },
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    },
+    {
+      "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerB/exactInputSingle/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract B, exactInputSingle signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.129Z",
+      "updated_at": "2026-08-18T13:29:06.129Z"
+    },
+    {
+      "id": "91d92a90-97ff-415f-8277-4566ff23d72e",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "unrelated/approve/allowance-revert",
+      "status": null,
+      "body": {
+        "note": "unrelated failure class entirely, reverted on allowance"
+      },
+      "created_at": "2026-08-18T13:29:06.131Z",
+      "updated_at": "2026-08-18T13:29:06.131Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"reverting\"",
+    "rows": [
+      {
+        "name": "revert-stem-check-a",
+        "category": "failure",
+        "rank": -1.4789915966386554e-06
+      },
+      {
+        "name": "revert-stem-check-b",
+        "category": "failure",
+        "rank": -1.4426229508196723e-06
+      },
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      },
+      {
+        "name": "routerB/exactInputSingle/slippage-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      },
+      {
+        "name": "unrelated/approve/allowance-revert",
+        "category": "failure",
+        "rank": -1.3435114503816796e-06
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='swapExactTokensForTokens', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"swapExactTokensForTokens\"",
+    "rows": [
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -1.7456015664650837
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='swap', prefix=False) ---
+{
+  "public_api_result": [],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"swap\"",
+    "rows": []
+  }
+}
+
+--- PART 2 / search_entities(query='tokens', prefix=False) ---
+{
+  "public_api_result": [],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"tokens\"",
+    "rows": []
+  }
+}
+
+--- PART 2 / search_entities(query='exactInputSingle', prefix=False) ---
+{
+  "public_api_result": [
+    {
+      "id": "e685c073-9a3a-4a72-9b07-e5b9e30b6b15",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerB/exactInputSingle/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract B, exactInputSingle signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.129Z",
+      "updated_at": "2026-08-18T13:29:06.129Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "\"exactInputSingle\"",
+    "rows": [
+      {
+        "name": "routerB/exactInputSingle/slippage-revert",
+        "category": "failure",
+        "rank": -1.7456015664650837
+      }
+    ]
+  }
+}
+
+--- PART 2 / search_entities(query='swapExact', prefix=True) ---
+{
+  "public_api_result": [
+    {
+      "id": "4fe0ebf7-ca56-4e30-8cac-7719032e308f",
+      "tenant_id": "00000000-0000-0000-0000-000000000001",
+      "category": "failure",
+      "name": "routerA/swapExactTokensForTokens/slippage-revert",
+      "status": null,
+      "body": {
+        "note": "contract A, swapExactTokensForTokens signature, reverted on slippage"
+      },
+      "created_at": "2026-08-18T13:29:06.105Z",
+      "updated_at": "2026-08-18T13:29:06.105Z"
+    }
+  ],
+  "raw_fts_with_rank": {
+    "sanitized_query": "swapExact*",
+    "rows": [
+      {
+        "name": "routerA/swapExactTokensForTokens/slippage-revert",
+        "category": "failure",
+        "rank": -1.7456015664650837
+      }
+    ]
+  }
+}
+
+======================================================================
+PART 3: status trap + revision identity
+======================================================================
+
+--- PART 3 / after first write (status='active') ---
+{
+  "id": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "tenant_id": "00000000-0000-0000-0000-000000000001",
+  "category": "probe",
+  "name": "status_check",
+  "status": "active",
+  "body": {
+    "v": 1
+  },
+  "created_at": "2026-08-18T13:29:06.151Z",
+  "updated_at": "2026-08-18T13:29:06.151Z"
+}
+
+--- PART 3 / full row BEFORE second write ---
+{
+  "id": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "tenant_id": "00000000-0000-0000-0000-000000000001",
+  "category": "probe",
+  "name": "status_check",
+  "status": "active",
+  "body": {
+    "v": 1
+  },
+  "created_at": "2026-08-18T13:29:06.151Z",
+  "updated_at": "2026-08-18T13:29:06.151Z"
+}
+
+--- PART 3 / set_entity() return value from second write (status omitted) ---
+{
+  "id": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "tenant_id": "00000000-0000-0000-0000-000000000001",
+  "category": "probe",
+  "name": "status_check",
+  "status": null,
+  "body": {
+    "v": 2
+  },
+  "created_at": "2026-08-18T13:29:06.151Z",
+  "updated_at": "2026-08-18T13:29:06.154Z"
+}
+
+--- PART 3 / full row AFTER second write ---
+{
+  "id": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "tenant_id": "00000000-0000-0000-0000-000000000001",
+  "category": "probe",
+  "name": "status_check",
+  "status": null,
+  "body": {
+    "v": 2
+  },
+  "created_at": "2026-08-18T13:29:06.151Z",
+  "updated_at": "2026-08-18T13:29:06.154Z"
+}
+
+--- PART 3 / id/created_at/updated_at comparison ---
+{
+  "id_before": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "id_after": "46a1e678-e45c-46aa-b879-5f54d7484938",
+  "id_unchanged": true,
+  "created_at_before": "2026-08-18T13:29:06.151Z",
+  "created_at_after": "2026-08-18T13:29:06.151Z",
+  "created_at_unchanged": true,
+  "updated_at_before": "2026-08-18T13:29:06.151Z",
+  "updated_at_after": "2026-08-18T13:29:06.154Z",
+  "status_before": "active",
+  "status_after": null
+}
+
+======================================================================
+PART 4: free-tier cap figure
+======================================================================
+
+--- PART 4 / lint.py constants (configured) ---
+{
+  "DEFAULT_SOFT_CAP_BYTES": 5242880,
+  "TIER_SOFT_CAPS": {
+    "free": 5242880,
+    "sync": null,
+    "team": null,
+    "lifetime": null,
+    "stake": null,
+    "enterprise": null
+  }
+}
+
+--- PART 4 / client.free_tier_status() (reported by running client) ---
+{
+  "tier": "free",
+  "db_size_bytes": 274432,
+  "soft_cap_bytes": 5242880,
+  "pct_used": 0.05234375,
+  "uncapped": false,
+  "at_or_above_warning": false,
+  "at_or_above_cap": false,
+  "upgrade_url": "https://sibyllabs.org/plugin#tier"
+}
