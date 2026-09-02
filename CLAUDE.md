@@ -14,6 +14,9 @@ from documentation. Several contradict the docs. Do not "improve" them.
 - sibyl-memory-client 0.8.0, sibyl-memory-cli 0.4.0, web3 8.0.0
 - Verified: schema.sql is byte-identical between 0.6.1 and 0.8.0. All
   tokenizer findings below hold. No public method signature changed.
+- LOCAL DEV FORK: anvil forking Base mainnet, PINNED to block 50786400.
+  RPC URL in .env (gitignored). The pin is MANDATORY — an unpinned fork
+  drifts with the chain and induced failures stop reproducing.
 - Findings source: ~/sibyl-probe/FINDINGS.md and probe-output.txt (scratch,
   outside this repo). Authority is the SDK source on disk, never the docs.
 
