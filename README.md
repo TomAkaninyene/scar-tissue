@@ -182,9 +182,15 @@ failure. Not a feature list.
 
 ## Prior work
 
-Nothing in this project predates September 1, 2026. No code, no design, and
-no written material was carried over from earlier work. The full commit
-history in this repository is the complete record of its construction.
+All code and design in this project date from September 1, 2026. No prior
+codebase was extended or carried over. The full commit history in this
+repository is the complete record of its construction.
+
+`research/` contains environment probes dated August 18, September 1 and
+September 2 — empirical verification of Sibyl Memory SDK behaviour and
+Base revert shapes, run against the installed packages and a pinned fork.
+They contain no project code. They are included because several findings
+contradict the published documentation, and the design rests on them.
 
 TODO: first commit hash and timestamp, as verifiable evidence.
 
