@@ -26,6 +26,12 @@ from memory import DB_PATH, SIG_VERSION, utc_now_iso
 # open_call/ rows can never bleed into neighbour results.
 LESSON_CATEGORY = "lesson"
 
+# Entity category for pre-flight claims. Deliberately NOT searched: it is
+# a record of what the agent believed before submitting, not a source of
+# corrections, and search_entities is always given category="lesson" so
+# these rows can never surface as neighbours.
+OPEN_CALL_CATEGORY = "open_call"
+
 # A neighbour is a hit within this factor of the TOP hit's BM25 score.
 # Measured spread: a token present in every row scores ~-1e-06 while a
 # distinctive one scores ~-0.79 — six orders of magnitude — so one order of
@@ -103,6 +109,23 @@ class LessonStore:
             "evidence": evidence,
         }
         return self._client.set_entity(LESSON_CATEGORY, sig, body)
+
+    def write_open_call(self, tx_ref: str, claim: dict[str, Any]) -> dict[str, Any]:
+        """Record the pre-flight claim for a call about to be submitted.
+
+        Written BEFORE the transaction goes out, so the claim exists even
+        if the process dies mid-submit — a claim with no outcome is itself
+        evidence.
+
+        Call it a second time with the same tx_ref to resolve the claim:
+        set_entity performs a true UPDATE, so the row keeps its id and its
+        created_at (when the claim was made) while updated_at moves to
+        when the outcome landed.
+
+        status is never passed, for the same reason it is never passed for
+        a lesson: the UPDATE assigns it unconditionally and would null it.
+        """
+        return self._client.set_entity(OPEN_CALL_CATEGORY, tx_ref, claim)
 
     # -- neighbours ------------------------------------------------------
     def find_neighbours(

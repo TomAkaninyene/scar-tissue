@@ -12,7 +12,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from lessons import LESSON_CATEGORY, LessonStore, open_client  # noqa: E402
+from lessons import (  # noqa: E402
+    LESSON_CATEGORY,
+    OPEN_CALL_CATEGORY,
+    LessonStore,
+    open_client,
+)
 from memory import build_signature  # noqa: E402
 
 ROUTER_V3 = "0x2626664c2603336E57B271c5C0b26F421741e481"
@@ -199,3 +204,35 @@ class TestPostmortemJournal(LessonStoreTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestOpenCall(LessonStoreTestCase):
+    """Pre-flight claims: written before submit, resolved after."""
+
+    def test_claim_round_trips(self):
+        claim = {"txRef": "abc", "amountIn": 10**16, "lesson_applied": False}
+        self.store.write_open_call("abc", claim)
+
+        stored = self.store.client.get_entity(OPEN_CALL_CATEGORY, "abc")
+        self.assertEqual(stored["body"], claim)
+
+    def test_resolving_a_claim_keeps_id_and_created_at(self):
+        first = self.store.write_open_call("abc", {"status": None})
+        time.sleep(0.005)
+        second = self.store.write_open_call("abc", {"status": 0})
+
+        self.assertEqual(first["id"], second["id"])
+        self.assertEqual(first["created_at"], second["created_at"])
+        self.assertNotEqual(first["updated_at"], second["updated_at"])
+        self.assertEqual(second["body"], {"status": 0})
+
+    def test_claims_never_surface_as_neighbours(self):
+        """The whole reason search_entities is always given a category."""
+        self.store.write_lesson(SIG_V3_SLIPPAGE, "widen it", "tx 0xaaa")
+        self.store.write_open_call(
+            "abc", {"note": "slippageRevert exactInputSingle"})
+
+        names = [hit["name"]
+                 for hit in self.store.find_neighbours("slippageRevert")]
+        self.assertIn(SIG_V3_SLIPPAGE, names)
+        self.assertNotIn("abc", names)
