@@ -97,6 +97,26 @@ a real receipt and a real exception, not inferred.
   unnormalized receipt address builds a signature that can never match a
   stored lesson. normalize_address() is MANDATORY at every receipt
   boundary — now confirmed against a real receipt, not assumed.
+- THREE REVERTS OBSERVED against the fork, ALL Error(string), ALL selector
+  0x08c379a0, ALL JSON-RPC code 3. No custom errors, no panic codes:
+    "Too little received"  slippage, exactInputSingle
+    "STF"                  TransferHelper.safeTransferFrom, 3 bytes 535446
+    "Transaction too old"  deadline, multicall wrapper only
+- CRITICAL: "STF" IS AMBIGUOUS. Insufficient allowance AND insufficient
+  balance both produce the identical string — the helper reports only that
+  the transferFrom failed, never why. THE CLASSIFIER MUST READ CHAIN STATE
+  AT THE FAILING BLOCK — allowance(owner, spender) and balanceOf(owner)
+  for that token — to split allowanceRevert from balanceRevert. THE REVERT
+  STRING ALONE IS NOT SUFFICIENT TO CLASSIFY. A classifier that maps
+  "STF" -> allowanceRevert is wrong half the time and files the lesson
+  under a signature the next run will retrieve and act on.
+- exactInputSingle on SwapRouter02 has NO deadline field — removed in 02.
+  A deadline revert is reachable ONLY through multicall(uint256,bytes[]),
+  selector 0x5ae401dc, which checks the deadline at the WRAPPER before the
+  swap executes. Verified: gasUsed 27180 there against 135473 for a swap
+  that reaches the pool. OUT OF SCOPE.
+- SCOPE: TWO failure classes, and no others. slippageRevert, and the STF
+  pair — allowanceRevert / balanceRevert.
 
 ## Hard rules
 
