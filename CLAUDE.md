@@ -70,6 +70,34 @@ Every lesson body carries "sig": "v1" so a future change is detectable.
   NEVER rely on it to suppress a bad neighbour. If a bad neighbour must
   be kept out, the token itself has to be wrong for it.
 
+## Revert handling
+
+Established against the pinned anvil fork by calling exactInputSingle on
+SwapRouter02 with a deliberately impossible amountOutMinimum. Observed off
+a real receipt and a real exception, not inferred.
+
+- A REVERTED RECEIPT CARRIES NO REASON. status 0, logs [], and no
+  revertReason field — nothing in the receipt says why it failed. Verified:
+  send_raw_transaction raised NOTHING and the receipt came back clean
+  apart from status == 0 and gasUsed 135473. The reason exists ONLY via a
+  RE-CALL: eth_call with the same calldata at the failing block. THE
+  POST-MORTEM IS THEREFORE TWO-STEP — the receipt establishes THAT it
+  failed, the re-call extracts WHY. A classifier handed only a receipt has
+  nothing to classify.
+- ContractLogicError: .message for the clean string, .data for the hex.
+  NEVER str(exc). args is a 2-tuple (message, data) and str() stringifies
+  the whole tuple, gluing the hex onto the end of the message. .data is a
+  STR, not bytes and not HexBytes — do not call .hex() on it. Verified:
+  .message == 'execution reverted: Too little received', .data ==
+  '0x08c379a0...' — a standard Error(string), selector 0x08c379a0. .call()
+  and .estimate_gas() raise the identical object; the node returns
+  JSON-RPC code 3 and web3 passes message and data through verbatim.
+- NORMALIZE EVERY ADDRESS THAT COMES OFF A RECEIPT. receipt["to"] returns
+  CHECKSUMMED (0x2626664c...41e481) while sig_v1 keys on lowercase, so an
+  unnormalized receipt address builds a signature that can never match a
+  stored lesson. normalize_address() is MANDATORY at every receipt
+  boundary — now confirmed against a real receipt, not assumed.
+
 ## Hard rules
 
 - LESSON STATE LIVES IN THE BODY. The status column is NEVER used.
