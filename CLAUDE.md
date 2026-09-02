@@ -115,6 +115,12 @@ a real receipt and a real exception, not inferred.
   selector 0x5ae401dc, which checks the deadline at the WRAPPER before the
   swap executes. Verified: gasUsed 27180 there against 135473 for a swap
   that reaches the pool. OUT OF SCOPE.
+- ADDRESS HANDLING IS ASYMMETRIC. Verified against web3 8.0.0: eth_call
+  ACCEPTS a lowercase `to`, but a lowercase ABI ARGUMENT raises
+  InvalidAddress ("web3.py only accepts checksum addresses"). So
+  lowercase on entry through normalize_address, checksum ONLY at the ABI
+  call boundary, and NOTHING checksummed leaves a module. The checksum is
+  a wire detail; it is never a stored value and never a memory key.
 - SCOPE: TWO failure classes, and no others. slippageRevert, and the STF
   pair — allowanceRevert / balanceRevert.
 
