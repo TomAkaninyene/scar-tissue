@@ -172,7 +172,12 @@ a real receipt and a real exception, not inferred.
   never by rewriting the old one. A config fix (git config user.email)
   corrects future commits and that is the whole remedy; past commits keep
   their metadata. If a rewrite seems warranted, ASK AND STOP.
-- Nothing in this project predates Sep 1. No prior work.
+- All code and design here date from Sep 1. No prior codebase was
+  extended or carried over. research/ holds environment probes from
+  Aug 18, Sep 1 and Sep 2 — the empirical basis for the rules in this
+  file, and NOT project code: nothing in src/ imports them, no test
+  covers them, none of them runs as part of the agent. Keep it that way.
+  This must stay in step with the Prior work section of README.md.
 - Scope: slippageRevert FIRST, complete, before anything else. The STF
   pair (allowanceRevert / balanceRevert) SECOND — it exists because STF is
   ambiguous and needs a state check, not because two classes are better
